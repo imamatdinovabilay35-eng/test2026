@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informatika Test AI</title>
-    <!-- Tailwind CSS v4 дұрыс қосылуы -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style type="text/tailwindcss">
-        @import "tailwindcss";
-    </style>
+    <!-- Tailwind CSS v3 (тұрақты жұмыс істейтін нұсқа) -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { 
             background-color: #0b0f19; 
@@ -26,8 +23,8 @@
         
         <!-- Жоғарғы панель және Тіл таңдау -->
         <div class="flex justify-between items-center glass-card p-3 rounded-2xl border border-gray-800">
-            <span class="text-xs font-semibold text-blue-400 bg-blue-950/50 px-2.5 py-1 rounded-lg">AI Platform</span>
-            <select id="langSelect" onchange="changelanguage(this.value)" class="bg-gray-900 text-gray-200 text-xs px-2 py-1 rounded-lg border border-gray-700 outline-none">
+            <span id="txt-ai" class="text-xs font-semibold text-blue-400 bg-blue-950/50 px-2.5 py-1 rounded-lg">AI Platform</span>
+            <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-gray-900 text-gray-200 text-xs px-2 py-1 rounded-lg border border-gray-700 outline-none cursor-pointer">
                 <option value="kk">Қазақша</option>
                 <option value="uz">O'zbekcha</option>
                 <option value="ru">Русский</option>
@@ -43,31 +40,31 @@
                 </div>
                 <div>
                     <h1 class="text-sm font-bold text-white">Informatika Test AI</h1>
-                    <p class="text-xs text-gray-400">1,000 та саралған professional тестлар</p>
+                    <p id="txt-desc" class="text-xs text-gray-400">1,000-нан астам саралған кәсіби тесттер</p>
                 </div>
             </div>
 
             <!-- Түймелер панелі -->
             <div class="grid grid-cols-3 gap-2 pt-2">
-                <button onclick="openSection('biletlar')" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium py-2 px-3 rounded-xl transition flex items-center justify-center space-x-1 cursor-pointer">
+                <button onclick="openSection('biletlar')" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium py-2 px-3 rounded-xl transition flex items-center justify-center space-x-1 cursor-pointer shadow-lg">
                     <span>🎫</span>
-                    <span>Biletlar</span>
+                    <span id="btn-bilet">Билеттер</span>
                 </button>
                 <button onclick="openSection('imtihon')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-medium py-2 px-3 rounded-xl transition flex items-center justify-center space-x-1 cursor-pointer">
                     <span>📝</span>
-                    <span>Imtihon</span>
+                    <span id="btn-imtihon">Емтихан</span>
                 </button>
                 <button onclick="openSection('statistika')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-medium py-2 px-3 rounded-xl transition flex items-center justify-center space-x-1 cursor-pointer">
                     <span>📊</span>
-                    <span>Statistika</span>
+                    <span id="btn-stat">Статистика</span>
                 </button>
             </div>
         </div>
 
         <!-- Бөлімдер тізімі -->
-        <div class="text-xs text-gray-400 px-1">bo'limlardan birini tanlang</div>
+        <div id="txt-select-section" class="text-xs text-gray-400 px-1">Бөлімдердің бірін таңлаңыз</div>
 
-        <div class="glass-card p-4 rounded-2xl border border-gray-800 flex items-center justify-between cursor-pointer hover:border-blue-500/50 transition">
+        <div onclick="openSection('kompyuter')" class="glass-card p-4 rounded-2xl border border-gray-800 flex items-center justify-between cursor-pointer hover:border-blue-500/50 transition">
             <div class="flex items-center space-x-3">
                 <div class="bg-blue-600/20 p-2 rounded-xl text-blue-400">
                     🖥️
@@ -80,17 +77,39 @@
             <span class="text-gray-500">→</span>
         </div>
 
-    </div><!-- JavaScript логикасы (түймелер жұмыс істеуі үшін) -->
+    </div><!-- Түймелер мен тілді басқаруға арналған JavaScript -->
     <script>
-        function changelanguage(lang) {
-            console.log("Таңдалған тіл:", lang);
-            // Тілді өзгерту логикасы
+        // Тілдерді аудару сөздігі
+        const translations = {
+            kk: {
+                bilet: "Билеттер", imtihon: "Емтихан", stat: "Статистика", selectSec: "Бөлімдердің бірін таңлаңыз", desc: "1,000-нан астам саралған кәсіби тесттер"
+            },
+            uz: {
+                bilet: "Biletlar", imtihon: "Imtihon", stat: "Statistika", selectSec: "Bo'limlardan birini tanlang", desc: "1,000 tadan ortiq saralangan professional testlar"
+            },
+            ru: {
+                bilet: "Билеты", imtihon: "Экзамен", stat: "Статистика", selectSec: "Выберите один из разделов", desc: "Более 1,000 отборных профессиональных тестов"
+            },
+            kaa: {
+                bilet: "Biletler", imtihon: "Imtixan", stat: "Statistika", selectSec: "Bólimlerden birin tańlań", desc: "1,000 nan artıq saralanǵan kásipliy testler"
+            }
+        };
+
+        function changeLanguage(lang) {
+            const t = translations[lang];
+            if (t) {
+                document.getElementById('btn-bilet').innerText = t.bilet;
+                document.getElementById('btn-imtihon').innerText = t.imtihon;
+                document.getElementById('btn-stat').innerText = t.stat;
+                document.getElementById('txt-select-section').innerText = t.selectSec;
+                document.getElementById('txt-desc').innerText = t.desc;
+            }
         }
 
         function openSection(sectionName) {
-            console.log("Ашылған бөлім:", sectionName);
-            // Бөлімдерді ашу логикасы
+            alert("Таңдалған бөлім: " + sectionName);
+            // Бұл жерге келесі бетке өту логикасын жазуға болады
         }
     </script>
 </body>
-</html>﻿
+</html>
