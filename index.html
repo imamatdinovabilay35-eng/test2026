@@ -6,8 +6,15 @@
     <title>Informatika Test AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0b0f19; color: #f3f4f6; font-family: 'Inter', sans-serif; }
-        .glass-card { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(10px); }
+        body { 
+            background-color: #0b0f19; 
+            color: #f3f4f6; 
+            font-family: 'Inter', sans-serif; 
+        }
+        .glass-card { 
+            background: rgba(17, 24, 39, 0.7); 
+            backdrop-filter: blur(10px); 
+        }
     </style>
 </head>
 <body class="min-h-screen p-4 sm:p-6">
@@ -63,7 +70,7 @@
                 </div>
                 <span class="text-gray-500">→</span>
             </div>
-        </div><!-- Ашылатын бөлім беті (бастапқыда жасырулы тұрады) -->
+        </div><!-- Ашылатын бөлім беті -->
         <div id="content-section" class="glass-card p-4 rounded-2xl border border-gray-800 hidden space-y-4">
             <div class="flex justify-between items-center">
                 <h2 id="section-title" class="text-sm font-bold text-white">Бөлім атауы</h2>
@@ -97,16 +104,12 @@
         }
 
         function openSection(sectionName) {
-            // Басты мәзірді жасырып, контент блогын көрсетеміз
             document.getElementById('main-menu').classList.add('hidden');
             document.getElementById('content-section').classList.remove('hidden');
-            
-            // Таңдалған бөлім аттарын шығару
             document.getElementById('section-title').innerText = "Таңдалған бөлім: " + sectionName;
         }
 
         function goBack() {
-            // Кері қайту батырмасы арқылы басты мәзірді қайта шығару
             document.getElementById('content-section').classList.add('hidden');
             document.getElementById('main-menu').classList.remove('hidden');
         }
