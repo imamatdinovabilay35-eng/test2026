@@ -41,7 +41,7 @@ const grade5Questions = [
             "A) Әріпті өшіру",
             "B) Енгізуді аяқтау немесе келесі жолға көшу",
             "C) Программаны толығымен өшіру"
-        ],
+        ],<script src="questions.js"></script>
         answer: 1
     }
 ];
