@@ -1,121 +1,56 @@
-<!DOCTYPE html>
-<html lang="kk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informatika Test AI</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { 
-            background-color: #0b0f19; 
-            color: #f3f4f6; 
-            font-family: 'Inter', sans-serif; 
-        }
-        .glass-card { 
-            background: rgba(17, 24, 39, 0.7); 
-            backdrop-filter: blur(10px); 
-        }
-    </style>
-</head>
-<body class="min-h-screen p-4 sm:p-6">
-    <div class="max-w-md mx-auto space-y-4">
-        
-        <!-- Басты мәзір -->
-        <div id="main-menu" class="space-y-4">
-            <!-- Жоғарғы панель -->
-            <div class="flex justify-between items-center glass-card p-3 rounded-2xl border border-gray-800">
-                <span class="text-xs font-semibold text-blue-400 bg-blue-950/50 px-2.5 py-1 rounded-lg">AI Platform</span>
-                <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-gray-900 text-gray-200 text-xs px-2 py-1 rounded-lg border border-gray-700 outline-none cursor-pointer">
-                    <option value="kk">Қазақша</option>
-                    <option value="uz">O'zbekcha</option>
-                    <option value="ru">Русский</option>
-                    <option value="kaa">Qaraqalpaqsha</option>
-                </select>
-            </div>
+# Информатика және аттестацияға арналған сұрақтар базасы
+questions_db = [
+    {
+        "id": 1,
+        "question": "Python тілінде тізімнің (list) соңына жаңа элемент қосу үшін қандай әдіс қолданылады?",
+        "options": ["A) add()", "B) append()", "C) insert()", "D) extend()"],
+        "correct": "B",
+        "explanation": "append() әдісі тізімнің соңына бір элементті қосады."
+    },
+    {
+        "id": 2,
+        "question": "Excel немесе Google Sheets бағдарламасында берілген шартты тексеру үшін қай функция қолданылады?",
+        "options": ["A) IF (ЕСЛИ)", "B) VLOOKUP (ВПР)", "C) SUM (СУММ)", "D) COUNT (СЧЕТ)"],
+        "correct": "A",
+        "explanation": "IF функциясы шартты тексереді (егер шарт ақиқат болса - бір мән, жалған болса - басқа мән береді)."
+    },
+    {
+        "id": 3,
+        "question": "GitHub платформасы не үшін қолданылады?",
+        "options": [
+            "A) Сурет өңдеу үшін", 
+            "B) Кодтарды сақтау және версияларын басқару үшін", 
+            "C) Видео монтаждау үшін", 
+            "D) Интернет желісін баптау үшін"
+        ],
+        "correct": "B",
+        "explanation": "GitHub - бұл бағдарлама кодын сақтауға, ортақ жұмыс істеуге және өзгерістерді бақылауға арналған жүйе."
+    }
+]
 
-            <!-- Негізгі карточка -->
-            <div class="glass-card p-4 rounded-2xl border border-gray-800 space-y-3">
-                <div class="flex items-center space-x-3">
-                    <div class="bg-blue-600/20 p-2.5 rounded-xl text-blue-400">💻</div>
-                    <div>
-                        <h1 class="text-sm font-bold text-white">Informatika Test AI</h1>
-                        <p id="txt-desc" class="text-xs text-gray-400">1,000-нан астам саралған кәсіби тесттер</p>
-                    </div>
-                </div>
-
-                <!-- Түймелер панелі -->
-                <div class="grid grid-cols-3 gap-2 pt-2">
-                    <button onclick="openTest()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium py-2 px-3 rounded-xl transition flex items-center justify-center space-x-1 cursor-pointer shadow-lg">
-                        <span>🎫</span> <span id="btn-bilet">Билеттер</span>
-                    </button>
-                    <button onclick="openTest()" class="bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-medium py-2 px-3 rounded-xl transition flex items-center justify-center space-x-1 cursor-pointer">
-                        <span>📝</span> <span id="btn-imtihon">Емтихан</span>
-                    </button>
-                    <button onclick="openTest()" class="bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-medium py-2 px-3 rounded-xl transition flex items-center justify-center space-x-1 cursor-pointer">
-                        <span>📊</span> <span id="btn-stat">Статистика</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Бөлімдер тізімі -->
-            <div id="txt-select-section" class="text-xs text-gray-400 px-1">Бөлімдердің бірін таңлаңыз</div>
-
-            <div onclick="openTest()" class="glass-card p-4 rounded-2xl border border-gray-800 flex items-center justify-between cursor-pointer hover:border-blue-500/50 transition">
-                <div class="flex items-center space-x-3">
-                    <div class="bg-blue-600/20 p-2 rounded-xl text-blue-400">🖥️</div>
-                    <div>
-                        <h2 class="text-xs font-bold text-white">Kompyuter tarixi va qurilmalari</h2>
-                        <p class="text-[11px] text-gray-400">CPU, xotira, kiritish-chiqarish qurilmalari</p>
-                    </div>
-                </div>
-                <span class="text-gray-500">→</span>
-            </div>
-        </div><!-- Тест шығатын бет -->
-        <div id="content-section" class="glass-card p-4 rounded-2xl border border-gray-800 hidden space-y-4">
-            <div class="flex justify-between items-center">
-                <h2 class="text-sm font-bold text-white">Информатика тесті</h2>
-                <button onclick="goBack()" class="bg-gray-800 text-gray-300 text-xs px-3 py-1.5 rounded-lg hover:bg-gray-700 cursor-pointer">← Артқа</button>
-            </div>
+def run_quiz():
+    score = 0
+    total = len(questions_db)
+    
+    print("--- ТЕСТ БАСТАЛДЫ ---\n")
+    
+    for q in questions_db:
+        print(f"Сұрақ {q['id']}: {q['question']}")
+        for option in q['options']:
+            print(option)
             
-            <div class="space-y-3">
-                <p class="text-xs font-semibold text-white">1. Дербес компьютердің процессоры қай жылы жасалды?</p>
-                <div class="space-y-2">
-                    <button onclick="alert('Дұрыс! Бұл дұрыс жауап.')" class="w-full text-left bg-gray-900/80 hover:bg-blue-600/30 border border-gray-700 text-gray-200 text-xs p-2.5 rounded-xl transition cursor-pointer">A) 1971 жылы (Intel 4004)</button>
-                    <button onclick="alert('Қате жауап!')" class="w-full text-left bg-gray-900/80 hover:bg-blue-600/30 border border-gray-700 text-gray-200 text-xs p-2.5 rounded-xl transition cursor-pointer">B) 1981 жылы</button>
-                    <button onclick="alert('Қате жауап!')" class="w-full text-left bg-gray-900/80 hover:bg-blue-600/30 border border-gray-700 text-gray-200 text-xs p-2.5 rounded-xl transition cursor-pointer">C) 1965 жылы</button>
-                </div>
-            </div>
-        </div>
+        user_answer = input("Жауабыңызды жазыңыз (әріпті таңдаңыз): ").strip().upper()
+        
+        if user_answer == q['correct']:
+            print("✅ Дұрыс!\n")
+            score += 1
+        else:
+            print(f"❌ Қате! Дұрыс жауап: {q['correct']}")
+            print(f"Түсіндірме: {q['explanation']}\n")
+            
+    print(f"--- ТЕСТ АЯҚТАЛДЫ ---")
+    print(f"Сіздің жинаған ұпайыңыз: {score} / {total}")
 
-    </div>
-
-    <!-- JavaScript логикасы -->
-    <script>
-        function openTest() {
-            document.getElementById('main-menu').style.display = 'none';
-            document.getElementById('content-section').style.display = 'block';
-        }
-
-        function goBack() {
-            document.getElementById('content-section').style.display = 'none';
-            document.getElementById('main-menu').style.display = 'block';
-        }
-
-        function changeLanguage(lang) {
-            const texts = {
-                kk: { bilet: "Билеттер", imtihon: "Емтихан", stat: "Статистика", selectSec: "Бөлімдердің бірін таңлаңыз" },
-                uz: { bilet: "Biletlar", imtihon: "Imtihon", stat: "Statistika", selectSec: "Bo'limlardan birini tanlang" },
-                ru: { bilet: "Билеты", imtihon: "Экзамен", stat: "Статистика", selectSec: "Выберите один из разделов" },
-                kaa: { bilet: "Biletler", imtihon: "Imtixan", stat: "Statistika", selectSec: "Bólimlerden birin tańlań" }
-            };
-            const t = texts[lang];
-            if (t) {
-                document.getElementById('btn-bilet').innerText = t.bilet;
-                document.getElementById('btn-imtihon').innerText = t.imtihon;
-                document.getElementById('btn-stat').innerText = t.stat;
-                document.getElementById('txt-select-section').innerText = t.selectSec;
-            }
-        }
-    </script>
-</body>
-</html>
+# Түзетілген бөлік: __name__ және "__main__"
+if __name__ == "__main__":
+    run_quiz()               
