@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ұстаз & Аттестация Тренажеры</title>
+    <title>AI Ұстаз & Шексіз Аттестация Тренажеры</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -12,21 +12,51 @@
     <!-- Бастапқы экран -->
     <div id="setup-card" class="max-w-2xl w-full bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-2xl mb-6">
         <h1 class="text-2xl font-bold text-emerald-400 mb-2 text-center">
-            <i class="fa-solid fa-graduation-cap mr-2"></i> Ұстаз & Аттестация Тренажеры
+            <i class="fa-solid fa-graduation-cap mr-2"></i> AI Ұстаз & Шексіз Аттестация Тренажеры
         </h1>
-        <p class="text-slate-400 text-sm text-center mb-6">Аттестация мен сертификаттауға арналған арнайы тест жүйесі</p>
+        <p class="text-slate-400 text-sm text-center mb-6">Барлық пән бойынша AI мұғалім дайындайтын шексіз тесттер</p>
 
         <div class="space-y-4">
+            <!-- API Key өрісі -->
             <div>
-                <label class="block text-sm font-medium text-slate-300 mb-1">Пәнді таңдаңыз:</label>
-                <select id="subject-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500">
-                    <option value="informatika">Информатика</option>
-                    <option value="pedagogika">Педагогика мен психология</option>
-                </select>
+                <label class="block text-sm font-medium text-slate-300 mb-1">Gemini API Key енгізіңіз:</label>
+                <input type="password" id="api-key-input" placeholder="AIzaSy..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500">
+                <p class="text-xs text-slate-500 mt-1">Кілтті <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-emerald-400 underline">Google AI Studio</a> сайтынан тегін алуға болады.</p>
+            </div>
+
+            <!-- Пән таңдау -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Пәнді таңдаңыз:</label>
+                    <select id="subject" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500">
+                        <option value="Педагогика мен психология (Аттестация)">Педагогика мен психология</option>
+                        <option value="Информатика">Информатика</option>
+                        <option value="Математика">Математика</option>
+                        <option value="Қазақ тілі мен әдебиеті">Қазақ тілі мен әдебиеті</option>
+                        <option value="Қазақстан тарихы">Қазақстан тарихы</option>
+                        <option value="Дүниежүзі тарихы">Дүниежүзі тарихы</option>
+                        <option value="Ағылшын тілі">Ағылшын тілі</option>
+                        <option value="Физика">Физика</option>
+                        <option value="Химия">Химия</option>
+                        <option value="Биология">Биология</option>
+                        <option value="География">География</option>
+                        <option value="Бастауыш сынып методикасы">Бастауыш сынып методикасы</option>
+                        <option value="Орыс тілі мен әдебиеті">Орыс тілі мен әдебиеті</option>
+                        <option value="Дене шынықтыру">Дене шынықтыру</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Мақсатыңыз:</label>
+                    <select id="target" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500">
+                        <option value="Мұғалімдер аттестациясы (ҰӘТ/НКТ)">Мұғалімдер аттестациясы</option>
+                        <option value="ҰБТ / Сертификаттау">ҰБТ / Сертификаттау</option>
+                        <option value="Педагогикалық шеберлік">Педагогикалық шеберлік</option>
+                    </select>
+                </div>
             </div>
 
             <button onclick="startQuiz()" class="w-full bg-emerald-600 hover:bg-emerald-500 font-bold py-3.5 rounded-xl transition shadow-lg shadow-emerald-900/40 mt-2">
-                🚀 Тестті Бастау
+                🚀 Шексіз Тестті Бастау
             </button>
         </div>
     </div>
@@ -38,8 +68,14 @@
                 <span id="current-subject" class="text-xs bg-emerald-900/50 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full font-semibold"></span>
             </div>
             <div class="text-sm font-medium text-slate-400">
-                Сұрақ: <span id="current-num" class="text-emerald-400 font-bold">1</span> / <span id="total-num" class="font-bold">0</span> | Дұрыс: <span id="score" class="text-emerald-400 font-bold">0</span>
+                Дұрыс жауап: <span id="score" class="text-emerald-400 font-bold">0</span> / <span id="total" class="font-bold">0</span>
             </div>
+        </div>
+
+        <!-- Жүктелу индикаторы -->
+        <div id="loading" class="hidden text-center py-10">
+            <i class="fa-solid fa-spinner fa-spin text-3xl text-emerald-400 mb-3"></i>
+            <p class="text-slate-400 text-sm">AI Мұғалім жаңа сұрақ пен егжей-тегжейлі түсіндірмені құрастыруда...</p>
         </div>
 
         <div id="quiz-content">
@@ -51,109 +87,128 @@
             <div id="explanation-box" class="hidden p-5 rounded-xl mb-6 text-sm border transition-all">
                 <div class="font-bold flex items-center mb-2">
                     <i class="fa-solid fa-chalkboard-user mr-2 text-lg"></i>
-                    <span>Түсіндірме:</span>
+                    <span>AI Ұстаздың түсіндірмесі:</span>
                 </div>
                 <div id="explanation-text" class="leading-relaxed space-y-2"></div>
             </div>
 
-            <button id="next-btn" onclick="nextQuestion()" class="hidden w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl transition">
-                Келесі сұрақ ➔
+            <button id="next-btn" onclick="fetchAIQuestion()" class="hidden w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl transition">
+                Келесі сұраққа өту ➔
             </button>
         </div>
     </div>
 
     <script>
-        const quizDatabase = {
-            informatika: [
-                {
-                    id: 1,
-                    question: "Python тілінде тізімнің (list) соңына жаңа элемент қосу үшін қандай әдіс қолданылады?",
-                    options: ["A) add()", "B) append()", "C) insert()", "D) extend()"],
-                    correct: "B",
-                    explanation: "append() әдісі тізімнің соңына дәл бір элемент қосады."
-                },
-                {
-                    id: 2,
-                    question: "Excel немесе Google Sheets бағдарламасында берілген шартты тексеру үшін қай функция қолданылады?",
-                    options: ["A) IF (ЕСЛИ)", "B) VLOOKUP (ВПР)", "C) SUM (СУММ)", "D) COUNT (СЧЕТ)"],
-                    correct: "A",
-                    explanation: "IF функциясы шартты тексереді (егер шарт ақиқат болса - бір мән, жалған болса - басқа мән береді)."
-                },
-                {
-                    id: 3,
-                    question: "GitHub платформасы не үшін қолданылады?",
-                    options: ["A) Сурет өңдеу үшін", "B) Кодтарды сақтау және версияларын басқару үшін", "C) Видео монтаждау үшін", "D) Интернет желісін баптау үшін"],
-                    correct: "B",
-                    explanation: "GitHub - бұл бағдарлама кодын сақтауға, ортақ жұмыс істеуге және өзгерістерді бақылауға арналған жүйе."
-                }
-            ],
-            pedagogika: [
-                {
-                    id: 1,
-                    question: "Қалыптастырушы бағалаудың басты мақсаты не?",
-                    options: ["A) Тоқсандық баға қою", "B) Оқу процесін түзету және оқушыға кері байланыс беру", "C) Емтихан алу", "D) Оқушыларды өзара салыстыру"],
-                    correct: "B",
-                    explanation: "Қалыптастырушы бағалау оқушының біліміндегі олқылықтарды анықтап, дер кезінде көмектесуге бағытталған."
-                },
-                {
-                    id: 2,
-                    question: "Блум таксономиясының ең жоғарғы деңгейі қайсысы?",
-                    options: ["A) Түсіну", "B) Қолдану", "C) Бағалау (немесе Жасау/Креатив)", "D) Бiлу"],
-                    correct: "C",
-                    explanation: "Блум таксономиясында 'Бағалау' және 'Жасау (Креатив)' ойлаудың ең жоғары деңгейлері болып табылады."
-                }
-            ]
-        };
-
-        let currentQuestions = [];
-        let currentIndex = 0;
+        let apiKey = '';
+        let currentQuestion = null;
         let score = 0;
+        let total = 0;
 
         function startQuiz() {
-            const selectedSubject = document.getElementById('subject-select').value;
-            currentQuestions = quizDatabase[selectedSubject] || [];
-            currentIndex = 0;
-            score = 0;
-
-            if (currentQuestions.length === 0) {
-                alert('Бұл пән бойынша сұрақтар әлі қосылмаған!');
+            apiKey = document.getElementById('api-key-input').value.trim();
+            if (!apiKey) {
+                alert('Өтініш, Google AI Studio сайтынан алынған Gemini API кілтін енгізіңіз!');
                 return;
             }
 
             document.getElementById('setup-card').classList.add('hidden');
             document.getElementById('quiz-card').classList.remove('hidden');
-            document.getElementById('current-subject').innerText = document.getElementById('subject-select').options[document.getElementById('subject-select').selectedIndex].text;
-            document.getElementById('total-num').innerText = currentQuestions.length;
+            document.getElementById('current-subject').innerText = document.getElementById('subject').value;
 
-            showQuestion();
+            fetchAIQuestion();
         }
 
-        function showQuestion() {
-            const q = currentQuestions[currentIndex];
-            document.getElementById('current-num').innerText = currentIndex + 1;
-            document.getElementById('score').innerText = score;
-            document.getElementById('question-text').innerText = q.question;
+        async function fetchAIQuestion() {
+            const subject = document.getElementById('subject').value;
+            const target = document.getElementById('target').value;
+
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('quiz-content').classList.add('hidden');
             document.getElementById('explanation-box').classList.add('hidden');
             document.getElementById('next-btn').classList.add('hidden');
 
-            const container = document.getElementById('options-container');
-            container.innerHTML = '';
+            const prompt = `Ты — опытный методист, эксперт по разработке тестов для аттестации учителей в Казахстане.
+Предмет: "${subject}". Назначение: "${target}".
+Сгенерируй 1 качественный тестовый вопрос с 4 вариантами (A, B, C, D) на казахском языке.
+Дай подробное объяснение как опытный учитель (почему именно этот ответ правильный и почему остальные не подходят).
 
-            q.options.forEach(opt => {
+Ответь СТРОГО в формате чистого JSON без кавычек и слов markdown:
+{
+  "question": "Сұрақтың мәтіні",
+  "options": ["A) Вариант 1", "B) Вариант 2", "C) Вариант 3", "D) Вариант 4"],
+  "correct": "A", 
+  "explanation": "Мұғалім сияқты толық, түсінікті және терең түсіндірме."
+}`;
+
+            const endpoints = [
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`,
+                `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`
+            ];
+
+            let success = false;
+
+            for (const url of endpoints) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: prompt }] }]
+                        })
+                    });
+
+                    if (!response.ok) continue;
+
+                    const data = await response.json();
+                    let rawText = data.candidates[0].content.parts[0].text;
+                    
+                    rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+                    currentQuestion = JSON.parse(rawText);
+                    
+                    renderQuestion();
+                    success = true;
+                    break;
+                } catch (e) {
+                    console.log('Келесі сервер әдісі байқалуда...', e);
+                }
+            }
+
+            if (!success) {
+                alert('API Кілттен қате шықты! Өтініш, aistudio.google.com/app/apikey сайтынан жаңа кілт алып, тексеріп көріңіз.');
+                document.getElementById('setup-card').classList.remove('hidden');
+                document.getElementById('quiz-card').classList.add('hidden');
+            }
+
+            document.getElementById('loading').classList.add('hidden');
+            if (success) {
+                document.getElementById('quiz-content').classList.remove('hidden');
+            }
+        }
+
+        function renderQuestion() {
+            document.getElementById('question-text').innerText = currentQuestion.question;
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            currentQuestion.options.forEach(opt => {
                 const letter = opt.charAt(0);
                 const btn = document.createElement('button');
                 btn.className = "w-full text-left bg-slate-700/60 hover:bg-slate-700 p-4 rounded-xl border border-slate-600 transition flex items-center justify-between";
                 btn.innerHTML = `<span>${opt}</span>`;
-                btn.onclick = () => selectAnswer(btn, letter, q);
-                container.appendChild(btn);
+                btn.onclick = () => selectAnswer(btn, letter);
+                optionsContainer.appendChild(btn);
             });
         }
 
-        function selectAnswer(selectedBtn, letter, q) {
-            const buttons = document.querySelectorAll('#options-container button');
-            buttons.forEach(b => b.disabled = true);
+        function selectAnswer(selectedBtn, letter) {
+            const allButtons = document.querySelectorAll('#options-container button');
+            allButtons.forEach(btn => btn.disabled = true);
 
-            const isCorrect = letter === q.correct;
+            total++;
+            document.getElementById('total').innerText = total;
+
+            const isCorrect = letter === currentQuestion.correct;
             const expBox = document.getElementById('explanation-box');
             const expText = document.getElementById('explanation-text');
 
@@ -167,26 +222,9 @@
                 expBox.className = "p-5 rounded-xl mb-6 text-sm border bg-rose-950/40 border-rose-500/50 text-rose-200";
             }
 
-            expText.innerHTML = `<strong>Дұрыс жауап: ${q.correct}</strong><br><br>${q.explanation}`;
+            expText.innerHTML = `<strong>Дұрыс жауап: ${currentQuestion.correct}</strong><br><br>${currentQuestion.explanation}`;
             expBox.classList.remove('hidden');
-
-            if (currentIndex < currentQuestions.length - 1) {
-                document.getElementById('next-btn').innerText = "Келесі сұрақ ➔";
-            } else {
-                document.getElementById('next-btn').innerText = "Тестті аяқтау 🏁";
-            }
             document.getElementById('next-btn').classList.remove('hidden');
-        }
-
-        function nextQuestion() {
-            if (currentIndex < currentQuestions.length - 1) {
-                currentIndex++;
-                showQuestion();
-            } else {
-                alert(`Тест аяқталды! Сіздің нәтижеңіз: ${score} / ${currentQuestions.length}`);
-                document.getElementById('setup-card').classList.remove('hidden');
-                document.getElementById('quiz-card').classList.add('hidden');
-            }
         }
     </script>
 </body>
