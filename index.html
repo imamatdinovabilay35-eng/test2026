@@ -1,56 +1,203 @@
-# Информатика және аттестацияға арналған сұрақтар базасы
-questions_db = [
-    {
-        "id": 1,
-        "question": "Python тілінде тізімнің (list) соңына жаңа элемент қосу үшін қандай әдіс қолданылады?",
-        "options": ["A) add()", "B) append()", "C) insert()", "D) extend()"],
-        "correct": "B",
-        "explanation": "append() әдісі тізімнің соңына бір элементті қосады."
-    },
-    {
-        "id": 2,
-        "question": "Excel немесе Google Sheets бағдарламасында берілген шартты тексеру үшін қай функция қолданылады?",
-        "options": ["A) IF (ЕСЛИ)", "B) VLOOKUP (ВПР)", "C) SUM (СУММ)", "D) COUNT (СЧЕТ)"],
-        "correct": "A",
-        "explanation": "IF функциясы шартты тексереді (егер шарт ақиқат болса - бір мән, жалған болса - басқа мән береді)."
-    },
-    {
-        "id": 3,
-        "question": "GitHub платформасы не үшін қолданылады?",
-        "options": [
-            "A) Сурет өңдеу үшін", 
-            "B) Кодтарды сақтау және версияларын басқару үшін", 
-            "C) Видео монтаждау үшін", 
-            "D) Интернет желісін баптау үшін"
-        ],
-        "correct": "B",
-        "explanation": "GitHub - бұл бағдарлама кодын сақтауға, ортақ жұмыс істеуге және өзгерістерді бақылауға арналған жүйе."
-    }
-]
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Ұстаз - Аттестация мен Сертификаттауға дайындық</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
 
-def run_quiz():
-    score = 0
-    total = len(questions_db)
-    
-    print("--- ТЕСТ БАСТАЛДЫ ---\n")
-    
-    for q in questions_db:
-        print(f"Сұрақ {q['id']}: {q['question']}")
-        for option in q['options']:
-            print(option)
-            
-        user_answer = input("Жауабыңызды жазыңыз (әріпті таңдаңыз): ").strip().upper()
-        
-        if user_answer == q['correct']:
-            print("✅ Дұрыс!\n")
-            score += 1
-        else:
-            print(f"❌ Қате! Дұрыс жауап: {q['correct']}")
-            print(f"Түсіндірме: {q['explanation']}\n")
-            
-    print(f"--- ТЕСТ АЯҚТАЛДЫ ---")
-    print(f"Сіздің жинаған ұпайыңыз: {score} / {total}")
+    <!-- Бастапқы экран -->
+    <div id="setup-card" class="max-w-2xl w-full bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-2xl mb-6">
+        <h1 class="text-2xl font-bold text-emerald-400 mb-2 text-center">
+            <i class="fa-solid fa-graduation-cap mr-2"></i> AI Ұстаз & Аттестация Тренажеры
+        </h1>
+        <p class="text-slate-400 text-sm text-center mb-6">Барлық пән бойынша аттестация мен сертификаттауға шексіз дайындық</p>
 
-# Түзетілген бөлік: __name__ және "__main__"
-if __name__ == "__main__":
-    run_quiz()               
+        <div class="space-y-4">
+            <!-- API Key өрісі -->
+            <div>
+                <label class="block text-sm font-medium text-slate-300 mb-1">Gemini API Key енгізіңіз:</label>
+                <input type="password" id="api-key-input" placeholder="AIzaSy..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500">
+            </div>
+
+            <!-- Пән таңдау -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Пәнді таңдаңыз:</label>
+                    <select id="subject" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500">
+                        <option value="Педагогика мен психология (Аттестация)">Педагогика мен психология</option>
+                        <option value="Информатика">Информатика</option>
+                        <option value="Математика">Математика</option>
+                        <option value="Қазақ тілі мен әдебиеті">Қазақ тілі мен әдебиеті</option>
+                        <option value="Қазақстан тарихы">Қазақстан тарихы</option>
+                        <option value="Ағылшын тілі">Ағылшын тілі</option>
+                        <option value="Физика">Физика</option>
+                        <option value="Химия">Химия</option>
+                        <option value="Биология">Биология</option>
+                        <option value="География">География</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Мақсатыңыз:</label>
+                    <select id="target" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500">
+                        <option value="Мұғалімдер аттестациясы (ҰӘТ/НКТ)">Мұғалімдер аттестациясы</option>
+                        <option value="ҰБТ / Сертификаттау">ҰБТ / Сертификаттау</option>
+                        <option value="Жалпы білімді тексеру">Жалпы білімді тексеру</option>
+                    </select>
+                </div>
+            </div>
+
+            <button onclick="startQuiz()" class="w-full bg-emerald-600 hover:bg-emerald-500 font-bold py-3.5 rounded-xl transition shadow-lg shadow-emerald-900/40 mt-2">
+                🚀 Шексіз Тестті Бастау
+            </button>
+        </div>
+    </div>
+
+    <!-- Тест экраны -->
+    <div id="quiz-card" class="hidden max-w-2xl w-full bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-2xl">
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-700">
+            <div>
+                <span id="current-subject" class="text-xs bg-emerald-900/50 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full font-semibold"></span>
+            </div>
+            <div class="text-sm font-medium text-slate-400">
+                Дұрыс жауап: <span id="score" class="text-emerald-400 font-bold">0</span> / <span id="total" class="font-bold">0</span>
+            </div>
+        </div>
+
+        <!-- Жүктелу индикаторы -->
+        <div id="loading" class="hidden text-center py-10">
+            <i class="fa-solid fa-spinner fa-spin text-3xl text-emerald-400 mb-3"></i>
+            <p class="text-slate-400 text-sm">AI Мұғалім жаңа сұрақ пен түсіндірмені дайындауда...</p>
+        </div>
+
+        <div id="quiz-content">
+            <h2 id="question-text" class="text-lg font-semibold mb-6 text-slate-100"></h2>
+            
+            <div id="options-container" class="space-y-3 mb-6"></div>
+
+            <!-- Түсіндірме -->
+            <div id="explanation-box" class="hidden p-5 rounded-xl mb-6 text-sm border transition-all">
+                <div class="font-bold flex items-center mb-2">
+                    <i class="fa-solid fa-chalkboard-user mr-2 text-lg"></i>
+                    <span>AI Ұстаздың түсіндірмесі:</span>
+                </div>
+                <div id="explanation-text" class="leading-relaxed space-y-2"></div>
+            </div>
+
+            <button id="next-btn" onclick="fetchAIQuestion()" class="hidden w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl transition">
+                Келесі сұраққа өту ➔
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let apiKey = '';
+        let currentQuestion = null;
+        let score = 0;
+        let total = 0;
+
+        function startQuiz() {
+            apiKey = document.getElementById('api-key-input').value.trim();
+            if (!apiKey) {
+                alert('Өтініш, API кілтін енгізіңіз!');
+                return;
+            }
+
+            document.getElementById('setup-card').classList.add('hidden');
+            document.getElementById('quiz-card').classList.remove('hidden');
+            document.getElementById('current-subject').innerText = document.getElementById('subject').value;
+
+            fetchAIQuestion();
+        }
+
+        async function fetchAIQuestion() {
+            const subject = document.getElementById('subject').value;
+            const target = document.getElementById('target').value;
+
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('explanation-box').classList.add('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+
+            const prompt = `Ты — опытный учитель и эксперт по подготовке к "${target}". 
+Предмет: "${subject}".
+Создай 1 тестовый вопрос с 4 вариантами ответов (A, B, C, D) для проверки знаний на казахском языке.
+Верни ответ СТРОГО в формате JSON без кавычек markdown:
+{
+  "question": "Сұрақтың мәтіні",
+  "options": ["A) Вариант 1", "B) Вариант 2", "C) Вариант 3", "D) Вариант 4"],
+  "correct": "A", 
+  "explanation": "Мұғалім сияқты өте егжей-тегжейлі түсіндірме. Неге бұл жауап дұрыс және басқалары неге қате екенін түсіндір."
+}`;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }]
+                    })
+                });
+
+                const data = await response.json();
+                let rawText = data.candidates[0].content.parts[0].text;
+                
+                rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+                currentQuestion = JSON.parse(rawText);
+
+                renderQuestion();
+            } catch (error) {
+                alert('Сұрақ жүктеуде қате шықты. API кілтін тексеріңіз.');
+                console.error(error);
+            } finally {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('quiz-content').classList.remove('hidden');
+            }
+        }
+
+        function renderQuestion() {
+            document.getElementById('question-text').innerText = currentQuestion.question;
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            currentQuestion.options.forEach(opt => {
+                const letter = opt.charAt(0);
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left bg-slate-700/60 hover:bg-slate-700 p-4 rounded-xl border border-slate-600 transition flex items-center justify-between";
+                btn.innerHTML = `<span>${opt}</span>`;
+                btn.onclick = () => selectAnswer(btn, letter);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(selectedBtn, letter) {
+            const allButtons = document.querySelectorAll('#options-container button');
+            allButtons.forEach(btn => btn.disabled = true);
+
+            total++;
+            document.getElementById('total').innerText = total;
+
+            const isCorrect = letter === currentQuestion.correct;
+            const expBox = document.getElementById('explanation-box');
+            const expText = document.getElementById('explanation-text');
+
+            if (isCorrect) {
+                selectedBtn.classList.add('bg-emerald-600/80', 'border-emerald-500');
+                score++;
+                document.getElementById('score').innerText = score;
+                expBox.className = "p-5 rounded-xl mb-6 text-sm border bg-emerald-950/40 border-emerald-500/50 text-emerald-200";
+            } else {
+                selectedBtn.classList.add('bg-rose-600/80', 'border-rose-500');
+                expBox.className = "p-5 rounded-xl mb-6 text-sm border bg-rose-950/40 border-rose-500/50 text-rose-200";
+            }
+
+            expText.innerHTML = `<strong>Дұрыс жауап: ${currentQuestion.correct}</strong><br><br>${currentQuestion.explanation}`;
+            expBox.classList.remove('hidden');
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
