@@ -178,4 +178,104 @@
         }
     </script>
 </body>
-</html>
+</html>// 1. С интерфейсинин тилдик котормолору
+const translations = {
+  kk: {
+    title: "Ұстаз & Аттестация Тренажеры",
+    subtitle: "Барлық пәндер бойынша аттестацияға арналған тест жүйесі",
+    selectSubject: "Пәнді таңдаңыз:",
+    startBtn: "Тестті бастау",
+    subjects: {
+      pedagogy: "Педагогика мен психология",
+      informatics: "Информатика",
+      math: "Математика",
+      kazakh: "Қазақ тілі мен әдебиеті",
+      primary: "Бастауыш сынып методикасы",
+      history: "Қазақстан тарихы",
+      physics: "Физика",
+      biology: "Биология"
+    }
+  },
+  uz: {
+    title: "Ustoz & Attestatsiya Trenajori",
+    subtitle: "Barcha fanlar boʻyicha attestatsiyaga moʻljallangan test tizimi",
+    selectSubject: "Fanni tanlang:",
+    startBtn: "Testni boshlash",
+    subjects: {
+      pedagogy: "Pedagogika va psihologiya",
+      informatics: "Informatika",
+      math: "Matematika",
+      kazakh: "Qozoq tili va adabiyoti",
+      primary: "Boshlangʻich sinf metodikasi",
+      history: "Qozogʻiston tarixi",
+      physics: "Fizika",
+      biology: "Biologiya"
+    }
+  },
+  kaa: {
+    title: "Ustaz & Attestatsiya Trenajeri",
+    subtitle: "Barliq pənler boyınsha attestatsiyaǵa arnalǵan test sisteması",
+    selectSubject: "Pándi saylań:",
+    startBtn: "Testti baslaw",
+    subjects: {
+      pedagogy: "Pedagogika hám psixologiya",
+      informatics: "Informatika",
+      math: "Matematika",
+      kazakh: "Qazaq tili hám ádebiyatı",
+      primary: "Baslawısh klas metodikası",
+      history: "Qazaqstan tariyxı",
+      physics: "Fizika",
+      biology: "Biologiya"
+    }
+  }
+};
+
+// 2. Суроолорду көбөйтүү үчүн база түзүмү (Ар бир тил жана предмет боюнча)
+const questionBank = {
+  kk: {
+    pedagogy: [
+      { question: "Педагогиканың негізгі объектісі не?", options: ["Адам", "Оқыту процесі", "Мектеп", "Қоғам"], answer: 1 },
+      // Бул жерге жүздөгөн жаңы суроолорду кошууга болот
+    ],
+    math: [
+      { question: "2 + 2 * 2 нешеге тең?", options: ["8", "6", "4", "2"], answer: 1 }
+    ]
+  },
+  uz: {
+    pedagogy: [
+      { question: "Pedagogikaning asosiy obyekti nima?", options: ["Inson", "Oʻqitish jarayoni", "Maktab", "Jamiyat"], answer: 1 }
+    ],
+    math: [
+      { question: "2 + 2 * 2 nechaga teng?", options: ["8", "6", "4", "2"], answer: 1 }
+    ]
+  },
+  kaa: {
+    pedagogy: [
+      { question: "Pedagogikanıń tiykarǵı obyekti ne?", options: ["Insan", "Oqıtıw процесси", "Mektep", "Cempya"], answer: 1 }
+    ],
+    math: [
+      { question: "2 + 2 * 2 neshege teń?", options: ["8", "6", "4", "2"], answer: 1 }
+    ]
+  }
+};
+
+// 3. Тилди алмаштыруу функциясы
+function changeLanguage() {
+  const lang = document.getElementById("langSelect").value;
+  
+  // Тексттерди жаңыртуу
+  document.getElementById("site-title").innerText = translations[lang].title;
+  document.getElementById("site-subtitle").innerText = translations[lang].subtitle;
+  document.getElementById("subject-label").innerText = translations[lang].selectSubject;
+
+  // Пэндердин (предметтердин) тизмесин жаңыртуу
+  const subjectSelect = document.getElementById("subjectSelect");
+  subjectSelect.innerHTML = "";
+  
+  for (const [key, value] of Object.entries(translations[lang].subjects)) {
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.innerText = value;
+    subjectSelect.appendChild(opt);
+  }
+}
